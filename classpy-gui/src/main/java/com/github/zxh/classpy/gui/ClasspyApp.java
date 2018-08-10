@@ -7,10 +7,7 @@ import com.github.zxh.classpy.helper.UrlHelper;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
@@ -20,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
 /**
  * Main class.
@@ -117,7 +115,17 @@ public class ClasspyApp extends Application {
     }
 
     private void onOpenFile(FileType ft, URL url) {
-        if (url == null) {
+        if (ft == FileType.EVM_BIN) {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Ethereum Binary Contract Input Dialog");
+            dialog.setContentText("0x");
+            dialog.setHeaderText("");
+            dialog.setResizable(true);
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                System.out.println(result);
+            }
+        } else if (url == null) {
             File file = MyFileChooser.showFileChooser(stage, ft);
             if (file != null) {
                 openFile(file);
