@@ -7,9 +7,11 @@ import com.github.zxh.classpy.gui.support.RecentFiles;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 /**
@@ -48,6 +50,19 @@ public final class MyMenuBar extends MenuBar {
         openMenu.getItems().add(createOpenMenuItem(FileType.LUA_BC));
         openMenu.getItems().add(createOpenMenuItem(FileType.EVM_BIN));
         openMenu.setMnemonicParsing(true);
+
+        openMenu.getItems().get(3).setOnAction(e -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Ethereum Binary Contract Input Dialog");
+            dialog.setContentText("0x");
+            dialog.setHeaderText("");
+            dialog.setResizable(true);
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                System.out.println(result);
+            }
+        });
+
         return openMenu;
     }
 
