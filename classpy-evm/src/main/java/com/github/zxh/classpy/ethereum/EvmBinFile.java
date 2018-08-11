@@ -6,7 +6,7 @@ public class EvmBinFile extends EvmBinComponent {
     protected void readContent(EvmBinReader reader) {
         Instruction x = new Instruction();
         x.read(reader);
-        add("xxx", x);
+        add(null, x);
     }
 
 }
