@@ -1,8 +1,12 @@
 package com.github.zxh.classpy.gui;
 
+import com.github.zxh.classpy.common.FileComponent;
+import com.github.zxh.classpy.evm.EvmHelper;
 import com.github.zxh.classpy.gui.jar.JarTreeView;
+import com.github.zxh.classpy.gui.parsed.HexText;
 import com.github.zxh.classpy.gui.parsed.ParsedViewerPane;
 import com.github.zxh.classpy.gui.support.*;
+import com.github.zxh.classpy.helper.StringHelper;
 import com.github.zxh.classpy.helper.UrlHelper;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -123,7 +127,14 @@ public class ClasspyApp extends Application {
             dialog.setResizable(true);
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
-                System.out.println(result);
+                byte[] data = EvmHelper.decodeHexStr(result.get());
+                HexText hex = new HexText(data);
+                FileComponent fc = new FileComponent() {};
+                ParsedViewerPane viewerPane = new ParsedViewerPane(fc, hex);
+                Tab tab = new Tab();
+                tab.setText(StringHelper.cutAndAppendEllipsis(result.get(), 10));
+                ((TabPane) root.getCenter()).getTabs().add(tab);
+                tab.setContent(viewerPane);
             }
         } else if (url == null) {
             File file = MyFileChooser.showFileChooser(stage, ft);
