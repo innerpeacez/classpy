@@ -1,4 +1,4 @@
-package com.github.zxh.classpy.evm;
+package com.github.zxh.classpy.ethereum;
 
 public class EvmHelper {
 

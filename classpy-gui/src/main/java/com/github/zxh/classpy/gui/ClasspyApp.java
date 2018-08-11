@@ -1,8 +1,8 @@
 package com.github.zxh.classpy.gui;
 
 import com.github.zxh.classpy.common.FileComponent;
-import com.github.zxh.classpy.evm.EvmBinParser;
-import com.github.zxh.classpy.evm.EvmHelper;
+import com.github.zxh.classpy.ethereum.EvmBinParser;
+import com.github.zxh.classpy.ethereum.EvmHelper;
 import com.github.zxh.classpy.gui.jar.JarTreeView;
 import com.github.zxh.classpy.gui.parsed.HexText;
 import com.github.zxh.classpy.gui.parsed.ParsedViewerPane;
