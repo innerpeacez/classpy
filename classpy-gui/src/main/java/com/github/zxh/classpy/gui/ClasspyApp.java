@@ -1,6 +1,7 @@
 package com.github.zxh.classpy.gui;
 
 import com.github.zxh.classpy.common.FileComponent;
+import com.github.zxh.classpy.evm.EvmBinParser;
 import com.github.zxh.classpy.evm.EvmHelper;
 import com.github.zxh.classpy.gui.jar.JarTreeView;
 import com.github.zxh.classpy.gui.parsed.HexText;
@@ -129,7 +130,7 @@ public class ClasspyApp extends Application {
             if (result.isPresent()) {
                 byte[] data = EvmHelper.decodeHexStr(result.get());
                 HexText hex = new HexText(data);
-                FileComponent fc = new FileComponent() {};
+                FileComponent fc = new EvmBinParser().parse(data);
                 ParsedViewerPane viewerPane = new ParsedViewerPane(fc, hex);
                 Tab tab = new Tab();
                 tab.setText(StringHelper.cutAndAppendEllipsis(result.get(), 10));

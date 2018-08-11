@@ -1,4 +1,7 @@
 package com.github.zxh.classpy.evm;
 
-public class EvmBinComponent {
+import com.github.zxh.classpy.common.FileComponent;
+
+public class EvmBinComponent extends FileComponent {
+
 }
