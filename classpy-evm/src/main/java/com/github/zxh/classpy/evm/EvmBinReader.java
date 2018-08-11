@@ -6,9 +6,8 @@ import java.nio.ByteOrder;
 
 public class EvmBinReader extends BytesReader {
 
-    public EvmBinReader(String hexByteCodes) {
-        super(EvmHelper.decodeHexStr(hexByteCodes),
-                ByteOrder.BIG_ENDIAN);
+    public EvmBinReader(byte[] data) {
+        super(data, ByteOrder.BIG_ENDIAN);
     }
 
 }
