@@ -4,6 +4,9 @@ import com.github.zxh.classpy.common.ParseException;
 
 public enum Opcode {
 
+    CALLVALUE(0x34, 0),
+    MSTORE(0x52, 0),
+    MSTORE8(0x52, 0),
     PUSH1(0x60, 1),
     PUSH2(0x61, 2),
     PUSH3(0x62, 3),
@@ -36,6 +39,22 @@ public enum Opcode {
     PUSH30(0x7d, 30),
     PUSH31(0x7e, 31),
     PUSH32(0x7f, 32),
+    DUP1(0x80, 0),
+    DUP2(0x81, 0),
+    DUP3(0x82, 0),
+    DUP4(0x83, 0),
+    DUP5(0x84, 0),
+    DUP6(0x85, 0),
+    DUP7(0x86, 0),
+    DUP8(0x87, 0),
+    DUP9(0x88, 0),
+    DUP10(0x89, 0),
+    DUP11(0x8a, 0),
+    DUP12(0x8b, 0),
+    DUP13(0x8c, 0),
+    DUP14(0x8d, 0),
+    DUP15(0x8e, 0),
+    DUP16(0x8f, 0),
     ;
 
     public int opcode;

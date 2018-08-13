@@ -7,8 +7,11 @@ public class Instruction extends EvmBinComponent {
     @Override
     protected void readContent(EvmBinReader reader) {
         Opcode opcode = Opcode.valueOf(reader.readByte());
-        reader.readBytes(opcode.n);
+        byte[] operands = reader.readBytes(opcode.n);
         setName(opcode.name());
+        if (operands.length > 0) {
+            setDesc(EvmHelper.encodeHexStr(operands));
+        }
     }
 
 }

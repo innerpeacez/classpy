@@ -14,4 +14,12 @@ public class EvmHelper {
         return data;
     }
 
+    public static String encodeHexStr(byte[] data) {
+        StringBuilder sb = new StringBuilder("0x");
+        for (byte b : data) {
+            sb.append(Integer.toHexString(b & 0xFF));
+        }
+        return sb.toString();
+    }
+
 }
