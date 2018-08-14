@@ -48,7 +48,12 @@ public enum Opcode {
     RETURNDATASIZE(0x3d, 0),
     RETURNDATACOPY(0x3e, 0),
     EXTCODEHASH   (0x3f, 0),
-
+    BLOCKHASH     (0x40, 0), // 0x40 range - block operations.
+    COINBASE      (0x40, 0),
+    TIMESTAMP     (0x40, 0),
+    NUMBER        (0x40, 0),
+    DIFFICULTY    (0x40, 0),
+    GASLIMIT      (0x40, 0),
     MSTORE    (0x52, 0),
     MSTORE8   (0x52, 0),
     PUSH1     (0x60, 1),
