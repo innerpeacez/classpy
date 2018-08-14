@@ -130,6 +130,23 @@ public enum Opcode {
     SWAP14        (0x9d, 0),
     SWAP15        (0x9e, 0),
     SWAP16        (0x9f, 0),
+    LOG0          (0xa0, 0), // 0xa0 range - logging ops.
+    LOG1          (0xa1, 0),
+    LOG2          (0xa2, 0),
+    LOG3          (0xa3, 0),
+    LOG4          (0xa4, 0),
+    PUSH          (0xb0, 0), // unofficial opcodes used for parsing.
+    DUP           (0xb1, 0),
+    SWAP          (0xb2, 0),
+    CREATE        (0xf0, 0), // 0xf0 range - closures.
+    CALL          (0xf1, 0),
+    CALLCODE      (0xf2, 0),
+    RETURN        (0xf3, 0),
+    DELEGATECALL  (0xf4, 0),
+    CREATE2       (0xf5, 0),
+    STATICCALL    (0xfa, 0),
+    REVERT        (0xfd, 0),
+    SELFDESTRUCT  (0xff, 0),
     ;
 
     public int opcode;
