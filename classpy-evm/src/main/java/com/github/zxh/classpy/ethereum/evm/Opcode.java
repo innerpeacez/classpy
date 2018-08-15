@@ -16,14 +16,14 @@ public enum Opcode {
     ADDMOD        (0x08, 0),
     MULMOD        (0x09, 0),
     EXP           (0x0a, 0),
-    SIGNEXTEND    (0x0b, 0),
+    SIGNEXTEND    (0x0b, 0), //
     LT            (0x10, 0), // 0x10 range - comparison ops.
     GT            (0x11, 0),
     SLT           (0x12, 0),
     SGT           (0x13, 0),
     EQ            (0x14, 0),
     ISZERO        (0x15, 0),
-    AND           (0x16, 0),
+    AND           (0x16, 0), // bitwise
     OR            (0x17, 0),
     XOR           (0x18, 0),
     NOT           (0x19, 0),
@@ -31,7 +31,7 @@ public enum Opcode {
     SHL           (0x1b, 0),
     SHR           (0x1c, 0),
     SAR           (0x1d, 0),
-    SHA3          (0x20, 0),
+    SHA3          (0x20, 0), // Keccak256 hash
     ADDRESS       (0x30, 0), // 0x30 range - closure state.
     BALANCE       (0x31, 0),
     ORIGIN        (0x32, 0),
@@ -165,6 +165,15 @@ public enum Opcode {
             }
         }
         throw new ParseException("Unknown opcode: " + opcode);
+    }
+
+    public static Opcode valueOf2(int opcode) {
+        for (Opcode val : values()) {
+            if (val.opcode == opcode) {
+                return val;
+            }
+        }
+        return null;
     }
 
 }

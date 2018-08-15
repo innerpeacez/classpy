@@ -6,11 +6,16 @@ public class Instruction extends EvmBinComponent {
 
     @Override
     protected void readContent(EvmBinReader reader) {
-        Opcode opcode = Opcode.valueOf(reader.readByte());
-        byte[] operands = reader.readBytes(opcode.n);
-        setName(opcode.name());
-        if (operands.length > 0) {
-            setDesc(EvmHelper.encodeHexStr(operands));
+        int opc = reader.readByte() & 0xFF;
+        Opcode opcode = Opcode.valueOf2(opc);
+        if (opcode == null) { // Unknown opcode
+            setName(EvmHelper.encodeHexStr(new byte[] {(byte) opc}));
+        } else {
+            setName(opcode.name());
+            byte[] operands = reader.readBytes(opcode.n);
+            if (operands.length > 0) {
+                setDesc(EvmHelper.encodeHexStr(operands));
+            }
         }
     }
 
