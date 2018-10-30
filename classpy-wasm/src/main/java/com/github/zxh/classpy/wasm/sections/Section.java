@@ -85,6 +85,8 @@ public class Section extends WasmBinComponent {
 
         if (name.equals("name")) {
             readNameData(reader);
+        } else if (name.equals("dylink")) {
+            readDyLinkData(reader);
         } else {
             int pos2 = reader.getPosition();
             size -= (pos2 - pos1);
@@ -104,6 +106,13 @@ public class Section extends WasmBinComponent {
                 readBytes(reader, "contents", size);
             }
         }
+    }
+
+    private void readDyLinkData(WasmBinReader reader) {
+        readU32(reader, "memorySize");
+        readU32(reader, "memoryAlignment");
+        readU32(reader, "tableSize");
+        readU32(reader, "tableAlignment");
     }
 
     @Override
