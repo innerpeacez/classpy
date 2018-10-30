@@ -9,7 +9,6 @@ import com.github.zxh.classpy.wasm.types.Limits;
 import com.github.zxh.classpy.wasm.types.TableType;
 import com.github.zxh.classpy.wasm.values.Byte;
 import com.github.zxh.classpy.wasm.values.Index;
-import com.github.zxh.classpy.wasm.values.Name;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,7 +81,7 @@ public class Section extends WasmBinComponent {
     private void readCustomSection(WasmBinReader reader, int size) {
         setName("custom section");
         int pos1 = reader.getPosition();
-        String name = read(reader, "name", new Name()).getDesc();
+        String name = readName(reader, "name");
         if (name.equals("name")) {
             readNameData(reader);
         } else {
@@ -99,11 +98,7 @@ public class Section extends WasmBinComponent {
             int subID = readByte(reader, "subID");
             int size = readU32(reader, "size");
             if (subID == 1) {
-                int n = readU32(reader, "v");
-                for (int i = 0; i < n; i++) {
-                    readIndex(reader, "idx");
-                    read(reader, "name", new Name());
-                }
+                readVector(reader, "function names", NameAssoc::new);
             } else {
                 readBytes(reader, "contents", size);
             }
@@ -130,6 +125,17 @@ public class Section extends WasmBinComponent {
                 }
             }
         }
+    }
+
+
+    private static class NameAssoc extends WasmBinComponent {
+
+        @Override
+        protected void readContent(WasmBinReader reader) {
+            int idx = readIndex(reader, "idx");
+            String name = readName(reader, "name");
+        }
+
     }
 
 }

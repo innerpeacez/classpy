@@ -3,7 +3,6 @@ package com.github.zxh.classpy.wasm.sections;
 import com.github.zxh.classpy.common.ParseException;
 import com.github.zxh.classpy.wasm.WasmBinComponent;
 import com.github.zxh.classpy.wasm.WasmBinReader;
-import com.github.zxh.classpy.wasm.values.Name;
 
 public class Export extends WasmBinComponent {
 
@@ -15,13 +14,13 @@ public class Export extends WasmBinComponent {
 
     @Override
     protected void readContent(WasmBinReader reader) {
-        Name name = read(reader, "name", new Name());
+        String name = readName(reader, "name");
         Desc desc = read(reader, "desc", new Desc());
         if (desc.b == 0) {
             funcIdx = desc.idx;
-            setDesc(name.getDesc() + "()");
+            setDesc(name + "()");
         } else {
-            setDesc(name.getDesc());
+            setDesc(name);
         }
     }
 

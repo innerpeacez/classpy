@@ -7,16 +7,15 @@ import com.github.zxh.classpy.wasm.types.GlobalType;
 import com.github.zxh.classpy.wasm.types.Limits;
 import com.github.zxh.classpy.wasm.types.TableType;
 import com.github.zxh.classpy.wasm.values.Index;
-import com.github.zxh.classpy.wasm.values.Name;
 
 public class Import extends WasmBinComponent {
 
     @Override
     protected void readContent(WasmBinReader reader) {
-        Name module = read(reader, "module", new Name());
-        Name name = read(reader, "name", new Name());
+        String module = readName(reader, "module");
+        String name = readName(reader, "name");
         Desc desc = read(reader, "desc", new Desc());
-        setDesc(module.getDesc() + "." + name.getDesc());
+        setDesc(module + "." + name);
         if (desc.b == 0) { // func
             setDesc(getDesc() + "()");
         }
