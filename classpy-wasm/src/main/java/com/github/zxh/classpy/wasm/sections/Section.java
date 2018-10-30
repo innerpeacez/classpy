@@ -79,9 +79,10 @@ public class Section extends WasmBinComponent {
     }
 
     private void readCustomSection(WasmBinReader reader, int size) {
-        setName("custom section");
         int pos1 = reader.getPosition();
         String name = readName(reader, "name");
+        setName("custom section: " + name);
+
         if (name.equals("name")) {
             readNameData(reader);
         } else {
@@ -134,6 +135,8 @@ public class Section extends WasmBinComponent {
         protected void readContent(WasmBinReader reader) {
             int idx = readIndex(reader, "idx");
             String name = readName(reader, "name");
+            setName("#" + idx);
+            setDesc(name + "()");
         }
 
     }
