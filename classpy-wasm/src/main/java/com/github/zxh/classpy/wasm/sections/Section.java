@@ -82,11 +82,31 @@ public class Section extends WasmBinComponent {
     private void readCustomSection(WasmBinReader reader, int size) {
         setName("custom section");
         int pos1 = reader.getPosition();
-        read(reader, "name", new Name());
-        int pos2 = reader.getPosition();
-        size -= (pos2 - pos1);
-        if (size > 0) {
-            readBytes(reader, "contents", size);
+        String name = read(reader, "name", new Name()).getDesc();
+        if (name.equals("name")) {
+            readNameData(reader);
+        } else {
+            int pos2 = reader.getPosition();
+            size -= (pos2 - pos1);
+            if (size > 0) {
+                readBytes(reader, "contents", size);
+            }
+        }
+    }
+
+    private void readNameData(WasmBinReader reader) {
+        while (reader.remaining() > 0) {
+            int subID = readByte(reader, "subID");
+            int size = readU32(reader, "size");
+            if (subID == 1) {
+                int n = readU32(reader, "v");
+                for (int i = 0; i < n; i++) {
+                    readIndex(reader, "idx");
+                    read(reader, "name", new Name());
+                }
+            } else {
+                readBytes(reader, "contents", size);
+            }
         }
     }
 
