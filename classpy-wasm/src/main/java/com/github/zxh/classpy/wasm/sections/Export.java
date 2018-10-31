@@ -2,7 +2,9 @@ package com.github.zxh.classpy.wasm.sections;
 
 import com.github.zxh.classpy.common.ParseException;
 import com.github.zxh.classpy.wasm.WasmBinComponent;
+import com.github.zxh.classpy.wasm.WasmBinFile;
 import com.github.zxh.classpy.wasm.WasmBinReader;
+import com.github.zxh.classpy.wasm.types.FuncType;
 
 public class Export extends WasmBinComponent {
 
@@ -21,6 +23,16 @@ public class Export extends WasmBinComponent {
             setDesc(name + "()");
         } else {
             setDesc(name);
+        }
+    }
+
+    @Override
+    protected void postRead(WasmBinFile wasm) {
+        if (funcIdx >= 0) {
+            int relFuncIdx = funcIdx - wasm.getImportedFuncs().size();
+            int funcTypeIdx = wasm.getFuncs().get(relFuncIdx).getIntValue();
+            FuncType funcType = wasm.getFuncTypes().get(funcTypeIdx);
+            setDesc(getDesc().replace("()", funcType.getDesc()));
         }
     }
 

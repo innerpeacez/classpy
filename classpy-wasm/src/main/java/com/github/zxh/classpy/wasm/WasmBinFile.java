@@ -3,14 +3,26 @@ package com.github.zxh.classpy.wasm;
 import com.github.zxh.classpy.common.FileComponent;
 import com.github.zxh.classpy.wasm.sections.Export;
 import com.github.zxh.classpy.wasm.sections.Section;
+import com.github.zxh.classpy.wasm.types.FuncType;
+import com.github.zxh.classpy.wasm.values.Index;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class WasmBinFile extends WasmBinComponent {
 
+    private List<FuncType> funcTypes;
+    private List<Index> funcs;
     private List<String> importedFuncs;
     private List<Export> exportedFuncs;
+
+    public List<FuncType> getFuncTypes() {
+        return funcTypes;
+    }
+
+    public List<Index> getFuncs() {
+        return funcs;
+    }
 
     public List<String> getImportedFuncs() {
         return importedFuncs;
@@ -25,6 +37,9 @@ public class WasmBinFile extends WasmBinComponent {
         readBytes(reader, "magic", 4);
         readBytes(reader, "version", 4);
         readSections(reader);
+        funcTypes = getSectionItems(1, FuncType.class);
+        funcs = getSectionItems(3, Index.class);
+        System.out.println(funcTypes);
         findImportedFuncs();
         findExportedFuncs();
     }
@@ -35,6 +50,17 @@ public class WasmBinFile extends WasmBinComponent {
             add("section", section);
             section.read(reader);
         }
+    }
+
+    private <T> List<T> getSectionItems(int secID, Class<T> itemClass) {
+        return getComponents().stream()
+                .filter(c -> c instanceof Section)                // section?
+                .map(c -> (Section) c)                            // yes
+                .filter(sec -> sec.getID() == secID)              // section
+                .map(sec -> (Vector) sec.getComponents().get(2))  // vector
+                .flatMap(v -> v.getComponents().stream().skip(1)) // items
+                .map(c -> itemClass.cast(c))                      // Ts
+                .collect(Collectors.toList());
     }
 
     private void findImportedFuncs() {
