@@ -19,8 +19,8 @@ public class WasmBinFile extends WasmBinComponent {
 
     public List<FuncType> getFuncTypes() { return funcTypes; }
     public List<Import> getImports() { return imports; }
-    public List<Index> getFuncs() { return funcs; }
     public List<Import> getImportedFuncs() { return importedFuncs; }
+    public List<Index> getFuncs() { return funcs; }
     public List<Export> getExportedFuncs() { return exportedFuncs; }
 
     @Override
@@ -34,7 +34,6 @@ public class WasmBinFile extends WasmBinComponent {
                 .filter(Import::isFunc)
                 .collect(Collectors.toList());
         funcs = getSectionItems(3, Index.class);
-        System.out.println(funcTypes);
         findExportedFuncs();
     }
 

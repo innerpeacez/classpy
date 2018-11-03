@@ -117,6 +117,12 @@ public class Section extends WasmBinComponent {
 
     @Override
     protected void postRead(WasmBinFile wasm) {
+        if (id == 1) { // types
+            int typeIdx = 0;
+            for (FuncType ft : wasm.getFuncTypes()) {
+                ft.setName("#" + (typeIdx++));
+            }
+        }
         if (id == 2) { // import section
             int funcIdx = 0;
             int globalIdx = 0;
@@ -129,15 +135,12 @@ public class Section extends WasmBinComponent {
             }
             for (Index idx : wasm.getFuncs()) {
                 idx.setName("func#" + (funcIdx++));
+                System.out.println(idx.getDesc());
+                idx.setDesc("type" + idx.getDesc());
             }
         }
 
         if (id == 10) { // code section
-            int typeIdx = 0;
-            for (FuncType ft : wasm.getFuncTypes()) {
-                ft.setName("#" + (typeIdx++));
-            }
-
             List<Code> codes = getComponents().get(2)
                     .getComponents().stream().skip(1)
                     .map(c -> (Code) c)
