@@ -11,7 +11,6 @@ import com.github.zxh.classpy.wasm.values.Byte;
 import com.github.zxh.classpy.wasm.values.Index;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Section extends WasmBinComponent {
 
@@ -153,16 +152,11 @@ public class Section extends WasmBinComponent {
     }
 
     private void postReadCodes(WasmBinFile wasm) {
-        List<Code> codes = getComponents().get(2)
-                .getComponents().stream().skip(1)
-                .map(c -> (Code) c)
-                .collect(Collectors.toList());
-
-//            for (int i = 0; i < codes.size(); i++) {
-//                codes.get(i).setDesc("func#" + (importedFuncCount + i));
-//            }
-
+        List<Code> codes = wasm.getCodes();
         int importedFuncCount = wasm.getImportedFuncs().size();
+        for (int i = 0; i < codes.size(); i++) {
+            codes.get(i).setName("func#" + (importedFuncCount + i));
+        }
         for (Export export : wasm.getExportedFuncs()) {
             int idx = export.getFuncIdx() - importedFuncCount;
             if (idx < codes.size()) {
