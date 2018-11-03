@@ -117,51 +117,59 @@ public class Section extends WasmBinComponent {
 
     @Override
     protected void postRead(WasmBinFile wasm) {
-        if (id == 1) { // types
-            int typeIdx = 0;
-            for (FuncType ft : wasm.getFuncTypes()) {
-                ft.setName("#" + (typeIdx++));
-            }
+        if (id == 1) {
+            postReadTypes(wasm);
+        } else if (id == 2) {
+            postReadImports(wasm);
+        } else if (id == 10) {
+            postReadCodes(wasm);
         }
-        if (id == 2) { // import section
-            int funcIdx = 0;
-            int globalIdx = 0;
-            for (Import imp : wasm.getImports()) {
-                if (imp.isFunc()) {
-                    imp.setName("func#" + (funcIdx++));
-                } else if (imp.isGlobal()) {
-                    imp.setName("global#" + (globalIdx++));
-                }
-            }
-            for (Index idx : wasm.getFuncs()) {
-                idx.setName("func#" + (funcIdx++));
-                idx.setDesc("type" + idx.getDesc());
-            }
-            for (Global glb : wasm.getGlobals()) {
-                glb.setName("global#" + (globalIdx++));
-            }
-        }
+    }
 
-        if (id == 10) { // code section
-            List<Code> codes = getComponents().get(2)
-                    .getComponents().stream().skip(1)
-                    .map(c -> (Code) c)
-                    .collect(Collectors.toList());
+    private void postReadTypes(WasmBinFile wasm) {
+        int typeIdx = 0;
+        for (FuncType ft : wasm.getFuncTypes()) {
+            ft.setName("#" + (typeIdx++));
+        }
+    }
+
+    private void postReadImports(WasmBinFile wasm) {
+        int funcIdx = 0;
+        int globalIdx = 0;
+        for (Import imp : wasm.getImports()) {
+            if (imp.isFunc()) {
+                imp.setName("func#" + (funcIdx++));
+            } else if (imp.isGlobal()) {
+                imp.setName("global#" + (globalIdx++));
+            }
+        }
+        for (Index idx : wasm.getFuncs()) {
+            idx.setName("func#" + (funcIdx++));
+            idx.setDesc("type" + idx.getDesc());
+        }
+        for (Global glb : wasm.getGlobals()) {
+            glb.setName("global#" + (globalIdx++));
+        }
+    }
+
+    private void postReadCodes(WasmBinFile wasm) {
+        List<Code> codes = getComponents().get(2)
+                .getComponents().stream().skip(1)
+                .map(c -> (Code) c)
+                .collect(Collectors.toList());
 
 //            for (int i = 0; i < codes.size(); i++) {
 //                codes.get(i).setDesc("func#" + (importedFuncCount + i));
 //            }
 
-            int importedFuncCount = wasm.getImportedFuncs().size();
-            for (Export export : wasm.getExportedFuncs()) {
-                int idx = export.getFuncIdx() - importedFuncCount;
-                if (idx < codes.size()) {
-                    codes.get(idx).setDesc(export.getDesc());
-                }
+        int importedFuncCount = wasm.getImportedFuncs().size();
+        for (Export export : wasm.getExportedFuncs()) {
+            int idx = export.getFuncIdx() - importedFuncCount;
+            if (idx < codes.size()) {
+                codes.get(idx).setDesc(export.getDesc());
             }
         }
     }
-
 
     private static class NameAssoc extends WasmBinComponent {
 
