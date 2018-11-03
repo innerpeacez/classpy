@@ -123,9 +123,12 @@ public class Section extends WasmBinComponent {
                 ft.setName("#" + (typeIdx++));
             }
             int funcIdx = 0;
+            int globalIdx = 0;
             for (Import imp : wasm.getImports()) {
                 if (imp.isFunc()) {
                     imp.setName("func#" + (funcIdx++));
+                } else if (imp.isGlobal()) {
+                    imp.setName("global#" + (globalIdx++));
                 }
             }
             for (Index idx : wasm.getFuncs()) {
