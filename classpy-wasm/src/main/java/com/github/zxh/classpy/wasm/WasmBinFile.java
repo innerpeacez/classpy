@@ -1,6 +1,7 @@
 package com.github.zxh.classpy.wasm;
 
 import com.github.zxh.classpy.wasm.sections.Export;
+import com.github.zxh.classpy.wasm.sections.Global;
 import com.github.zxh.classpy.wasm.sections.Import;
 import com.github.zxh.classpy.wasm.sections.Section;
 import com.github.zxh.classpy.wasm.types.FuncType;
@@ -15,12 +16,14 @@ public class WasmBinFile extends WasmBinComponent {
     private List<Import> imports;
     private List<Import> importedFuncs;
     private List<Index> funcs;
+    private List<Global> globals;
     private List<Export> exportedFuncs;
 
     public List<FuncType> getFuncTypes() { return funcTypes; }
     public List<Import> getImports() { return imports; }
     public List<Import> getImportedFuncs() { return importedFuncs; }
     public List<Index> getFuncs() { return funcs; }
+    public List<Global> getGlobals() { return globals; }
     public List<Export> getExportedFuncs() { return exportedFuncs; }
 
     @Override
@@ -34,6 +37,7 @@ public class WasmBinFile extends WasmBinComponent {
                 .filter(Import::isFunc)
                 .collect(Collectors.toList());
         funcs = getSectionItems(3, Index.class);
+        globals = getSectionItems(6, Global.class);
         findExportedFuncs();
     }
 

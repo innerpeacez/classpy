@@ -135,8 +135,10 @@ public class Section extends WasmBinComponent {
             }
             for (Index idx : wasm.getFuncs()) {
                 idx.setName("func#" + (funcIdx++));
-                System.out.println(idx.getDesc());
                 idx.setDesc("type" + idx.getDesc());
+            }
+            for (Global glb : wasm.getGlobals()) {
+                glb.setName("global#" + (globalIdx++));
             }
         }
 
