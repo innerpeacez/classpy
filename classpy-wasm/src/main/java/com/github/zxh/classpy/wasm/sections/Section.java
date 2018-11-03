@@ -157,10 +157,12 @@ public class Section extends WasmBinComponent {
         for (int i = 0; i < codes.size(); i++) {
             codes.get(i).setName("func#" + (importedFuncCount + i));
         }
-        for (Export export : wasm.getExportedFuncs()) {
-            int idx = export.getFuncIdx() - importedFuncCount;
-            if (idx < codes.size()) {
-                codes.get(idx).setDesc(export.getDesc());
+        for (Export export : wasm.getExports()) {
+            if (export.getFuncIdx() >= 0) {
+                int idx = export.getFuncIdx() - importedFuncCount;
+                if (idx < codes.size()) {
+                    codes.get(idx).setDesc(export.getDesc());
+                }
             }
         }
     }

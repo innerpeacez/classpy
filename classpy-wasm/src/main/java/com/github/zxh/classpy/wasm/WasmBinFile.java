@@ -14,7 +14,7 @@ public class WasmBinFile extends WasmBinComponent {
     private List<Import> importedFuncs;
     private List<Index> funcs;
     private List<Global> globals;
-    private List<Export> exportedFuncs;
+    private List<Export> exports;
     private List<Code> codes;
 
     public List<FuncType> getFuncTypes() { return funcTypes; }
@@ -22,7 +22,7 @@ public class WasmBinFile extends WasmBinComponent {
     public List<Import> getImportedFuncs() { return importedFuncs; }
     public List<Index> getFuncs() { return funcs; }
     public List<Global> getGlobals() { return globals; }
-    public List<Export> getExportedFuncs() { return exportedFuncs; }
+    public List<Export> getExports() { return exports; }
     public List<Code> getCodes() { return codes; }
 
     @Override
@@ -37,7 +37,7 @@ public class WasmBinFile extends WasmBinComponent {
                 .collect(Collectors.toList());
         funcs = getSectionItems(3, Index.class);
         globals = getSectionItems(6, Global.class);
-        findExportedFuncs();
+        exports = getSectionItems(7, Export.class);
         codes = getSectionItems(10, Code.class);
     }
 
@@ -57,18 +57,6 @@ public class WasmBinFile extends WasmBinComponent {
                 .map(sec -> (Vector) sec.getComponents().get(2))  // vector
                 .flatMap(v -> v.getComponents().stream().skip(1)) // items
                 .map(c -> itemClass.cast(c))                      // Ts
-                .collect(Collectors.toList());
-    }
-
-    private void findExportedFuncs() {
-        exportedFuncs = getComponents().stream()
-                .filter(c -> c instanceof Section)                // section?
-                .map(c -> (Section) c)                            // yes
-                .filter(sec -> sec.getID() == 7)                  // exports?
-                .map(sec -> (Vector) sec.getComponents().get(2))  // vector
-                .flatMap(v -> v.getComponents().stream().skip(1)) // exports
-                .map(c -> (Export) c)                             // exports
-                .filter(x -> x.getFuncIdx() >= 0)                 // function
                 .collect(Collectors.toList());
     }
 
