@@ -13,6 +13,10 @@ public class Import extends WasmBinComponent {
 
     private int funcTypeIdx = -1;
 
+    public boolean isFunc() {
+        return funcTypeIdx >= 0;
+    }
+
     @Override
     protected void readContent(WasmBinReader reader) {
         String module = readName(reader, "module");

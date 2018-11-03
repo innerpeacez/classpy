@@ -118,16 +118,30 @@ public class Section extends WasmBinComponent {
     @Override
     protected void postRead(WasmBinFile wasm) {
         if (id == 10) { // code section
+            int typeIdx = 0;
+            for (FuncType ft : wasm.getFuncTypes()) {
+                ft.setName("#" + (typeIdx++));
+            }
+            int funcIdx = 0;
+            for (Import imp : wasm.getImports()) {
+                if (imp.isFunc()) {
+                    imp.setName("func#" + (funcIdx++));
+                }
+            }
+            for (Index idx : wasm.getFuncs()) {
+                idx.setName("func#" + (funcIdx++));
+            }
+
             List<Code> codes = getComponents().get(2)
                     .getComponents().stream().skip(1)
                     .map(c -> (Code) c)
                     .collect(Collectors.toList());
 
-            int importedFuncCount = wasm.getImportedFuncs().size();
 //            for (int i = 0; i < codes.size(); i++) {
 //                codes.get(i).setDesc("func#" + (importedFuncCount + i));
 //            }
 
+            int importedFuncCount = wasm.getImportedFuncs().size();
             for (Export export : wasm.getExportedFuncs()) {
                 int idx = export.getFuncIdx() - importedFuncCount;
                 if (idx < codes.size()) {
